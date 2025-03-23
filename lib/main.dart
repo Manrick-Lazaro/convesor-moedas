@@ -19,7 +19,7 @@ void main() async {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.amber),
           ),
-          hintStyle: TextStyle(color: Colors.amber)
+          hintStyle: TextStyle(color: Colors.amber),
         ),
       ),
     ),
@@ -34,6 +34,26 @@ Future<Map> getData() async {
   return json.decode(response.body);
 }
 
+Widget BuildTextField(
+  String label,
+  String prefix,
+  TextEditingController controller,
+  ValueChanged<String> onChange,
+) {
+  return TextField(
+    decoration: InputDecoration(
+      label: Text(label),
+      labelStyle: TextStyle(color: Colors.amber),
+      prefix: Text(prefix),
+      border: OutlineInputBorder(),
+    ),
+    style: TextStyle(fontSize: 25, color: Colors.white),
+    controller: controller,
+    onChanged: onChange,
+    keyboardType: TextInputType.number,
+  );
+}
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -44,6 +64,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   double dolar = 0.0;
   double euro = 0.0;
+
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
+  final euroController = TextEditingController();
+
+  void _realChanged(String text) {
+    print("ok");
+  }
+
+  void _dolarChanged(String text) {}
+
+  void _euroChanged(String text) {}
 
   @override
   Widget build(BuildContext context) {
@@ -89,35 +121,11 @@ class _HomeState extends State<Home> {
                         color: Colors.amber,
                         size: 150,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          label: Text('Reais'),
-                          prefix: Text("R\$ "),
-                          labelStyle: TextStyle(color: Colors.amber),
-                          border: OutlineInputBorder(),
-                        ),
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                      Divider(color: Colors.black26,),
-                      TextField(
-                        decoration: InputDecoration(
-                          label: Text('Dólares'),
-                          prefix: Text("R\$ "),
-                          labelStyle: TextStyle(color: Colors.amber),
-                          border: OutlineInputBorder(),
-                        ),
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
+                      BuildTextField("Reais", "R\$ ", realController, _realChanged),
                       Divider(color: Colors.black26),
-                      TextField(
-                        decoration: InputDecoration(
-                          label: Text('Euros'),
-                          prefix: Text("€ "),
-                          labelStyle: TextStyle(color: Colors.amber),
-                          border: OutlineInputBorder(),
-                        ),
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
+                      BuildTextField("Dólares", "US\$ ", dolarController, _dolarChanged),
+                      Divider(color: Colors.black26),
+                      BuildTextField("Euros", "€ ", euroController, _euroChanged),
                     ],
                   ),
                 );
