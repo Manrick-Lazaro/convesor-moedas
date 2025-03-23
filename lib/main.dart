@@ -70,12 +70,39 @@ class _HomeState extends State<Home> {
   final euroController = TextEditingController();
 
   void _realChanged(String text) {
-    print("ok");
+    _clearAll(text);
+
+    double real = double.parse(text);
+
+    dolarController.text = (real / dolar).toStringAsFixed(2);
+    euroController.text = (real / euro).toStringAsFixed(2);
   }
 
-  void _dolarChanged(String text) {}
+  void _dolarChanged(String text) {
+    _clearAll(text);
 
-  void _euroChanged(String text) {}
+    double dolar = double.parse(text);
+
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
+  }
+
+  void _euroChanged(String text) {
+    _clearAll(text);
+
+    double euro = double.parse(text);
+
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
+  }
+
+  void _clearAll(String text) {
+    if (text.isEmpty) {
+      realController.clear();
+      dolarController.clear();
+      euroController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +148,26 @@ class _HomeState extends State<Home> {
                         color: Colors.amber,
                         size: 150,
                       ),
-                      BuildTextField("Reais", "R\$ ", realController, _realChanged),
+                      BuildTextField(
+                        "Reais",
+                        "R\$ ",
+                        realController,
+                        _realChanged,
+                      ),
                       Divider(color: Colors.black26),
-                      BuildTextField("Dólares", "US\$ ", dolarController, _dolarChanged),
+                      BuildTextField(
+                        "Dólares",
+                        "US\$ ",
+                        dolarController,
+                        _dolarChanged,
+                      ),
                       Divider(color: Colors.black26),
-                      BuildTextField("Euros", "€ ", euroController, _euroChanged),
+                      BuildTextField(
+                        "Euros",
+                        "€ ",
+                        euroController,
+                        _euroChanged,
+                      ),
                     ],
                   ),
                 );
