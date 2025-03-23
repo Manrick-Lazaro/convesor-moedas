@@ -6,7 +6,24 @@ import 'dart:convert';
 void main() async {
   Future<Map> data = getData();
 
-  runApp(MaterialApp(home: Home()));
+  runApp(
+    MaterialApp(
+      home: Home(),
+      theme: ThemeData(
+        hintColor: Colors.amber,
+        primaryColor: Colors.white,
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          hintStyle: TextStyle(color: Colors.amber)
+        ),
+      ),
+    ),
+  );
 }
 
 Future<Map> getData() async {
@@ -25,6 +42,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  double dolar = 0.0;
+  double euro = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,12 +67,37 @@ class _HomeState extends State<Home> {
                 ),
               );
             default:
-              if(snapshot.hasError) {
+              if (snapshot.hasError) {
                 return Center(
                   child: Text(
                     'Erro ao recuperar os dados :(',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25, color: Colors.amber),
+                  ),
+                );
+              } else {
+                dolar = snapshot.data?["results"]["currencies"]["USD"]["buy"];
+                euro = snapshot.data?["results"]["currencies"]["EUR"]["buy"];
+
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Icon(
+                        Icons.monetization_on,
+                        color: Colors.amber,
+                        size: 150,
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          label: Text('Reais'),
+                          prefix: Text("R\$ "),
+                          labelStyle: TextStyle(color: Colors.amber),
+                          border: OutlineInputBorder(),
+                        ),
+                        style: TextStyle(fontSize: 25, color: Colors.white),
+                      ),
+                    ],
                   ),
                 );
               }
